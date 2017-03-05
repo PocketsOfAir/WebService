@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
+using System;
 using Newtonsoft.Json;
 
 namespace WebService.Tests
@@ -7,6 +8,34 @@ namespace WebService.Tests
 	[TestClass]
 	public class JsonParserTests
 	{
+		[TestMethod]
+		public void CheckStructureConversion()
+		{
+			PayloadStructure payload = new PayloadStructure();
+			payload.drm = true;
+			payload.episodeCount = 5;
+			payload.image.showImage = "some/image/url";
+			payload.slug = "some/url";
+			payload.title = "Show Title";
+
+			ResponseContainer container = new ResponseContainer();
+			container.response.Add(new ResponseStructure(payload));
+			Assert.AreEqual(container.response.Count, 1);
+			Assert.AreEqual(payload.image.showImage, container.response[0].image);
+			Assert.AreEqual(payload.slug, container.response[0].slug);
+			Assert.AreEqual(payload.title, container.response[0].title);
+
+			try
+			{
+				payload.image = null;
+				container.response.Add(new ResponseStructure(payload));
+			}
+			catch (NullReferenceException)
+			{
+				Assert.AreEqual(container.response.Count, 1);
+			}
+		}
+
 		[TestMethod]
 		public void CheckEmptyStringFailsToParse()
 		{
@@ -26,7 +55,7 @@ namespace WebService.Tests
 		{
 			string input, output;
 
-			StreamReader reader = new StreamReader(@"Tests\TestData1.json");
+			StreamReader reader = new StreamReader(@"Tests\TestData.json");
 			input = reader.ReadToEnd();
 			reader.Close();
 
@@ -50,7 +79,7 @@ namespace WebService.Tests
 		public void CheckBrokenJsonFails()
 		{
 			string input, output;
-			StreamReader reader = new StreamReader("Tests/BrokenData1.json");
+			StreamReader reader = new StreamReader("Tests/BrokenData.json");
 			input = reader.ReadToEnd();
 			reader.Close();
 

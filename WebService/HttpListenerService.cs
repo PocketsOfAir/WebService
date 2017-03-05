@@ -10,7 +10,7 @@ namespace WebService
 	{
 		private HttpListener m_Listener;
 
-		public bool running { get { return m_Listener != null && m_Listener.IsListening; } }
+		public bool isListening { get { return m_Listener != null && m_Listener.IsListening; } }
 
 		public HttpListenerService(params string[] prefixes)
 		{
@@ -29,20 +29,21 @@ namespace WebService
 		{
 			if (m_Listener.IsListening)
 				throw new InvalidOperationException("Server is already running.");
+			m_Listener.Start();
+			Console.WriteLine("Server Started...");
 			Thread listenerAsync = new Thread(Listen);
 			listenerAsync.Start();
 		}
 
 		public void StopServer()
 		{
-			m_Listener.Stop();
+			if (m_Listener.IsListening)
+				m_Listener.Stop();
 			m_Listener.Close();
 		}
 
 		private void Listen()
 		{
-			m_Listener.Start();
-			Console.WriteLine("Server Started...");
 			while (m_Listener.IsListening)
 			{
 				HttpListenerContext context;

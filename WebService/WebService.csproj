@@ -58,6 +58,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Tests\HttpListenerTests.cs" />
     <Compile Include="Tests\JsonParserTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -70,10 +71,10 @@
     <Content Include="Resources\400BadRequest.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Tests\TestData1.json">
+    <Content Include="Tests\TestData.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Tests\BrokenData1.json">
+    <Content Include="Tests\BrokenData.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\FailedParseError.json">
