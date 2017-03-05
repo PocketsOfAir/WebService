@@ -2,6 +2,7 @@
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace WebService
 {
@@ -16,7 +17,7 @@ namespace WebService
 			}
 			catch (JsonReaderException)
 			{
-				output = "";
+				output = File.ReadAllText(@"Resources\FailedParseError.json");
 				return false;
 			}
 

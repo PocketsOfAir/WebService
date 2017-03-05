@@ -47,5 +47,12 @@ namespace WebService
 			slug = source.slug;
 			title = source.title;
 		}
+
+		public ResponseStructure() { }
+	}
+
+	public class ErrorStructure
+	{
+		public string error { get; set; }
 	}
 }

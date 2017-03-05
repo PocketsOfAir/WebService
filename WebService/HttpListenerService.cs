@@ -2,6 +2,7 @@
 using System.Net;
 using System.Text;
 using System.Threading;
+using System.IO;
 
 namespace WebService
 {
@@ -20,7 +21,6 @@ namespace WebService
 				throw new ArgumentException("No prefixes");
 
 			m_Listener = new HttpListener();
-
 			foreach (string s in prefixes)
 				m_Listener.Prefixes.Add(s);
 		}
@@ -58,18 +58,27 @@ namespace WebService
 
 				if(context.Request.HttpMethod ==  null || context.Request.HttpMethod.ToUpper() != "POST")
 				{
-					ReturnBadRequestError(context, "");
+					using (StreamReader reader = new StreamReader(@"Resources\400BadRequest.html"))
+					{
+						ReturnBadRequestError(context, reader.ReadToEnd());
+					}
 					continue;
 				}
 
 				if (context.Request.InputStream == null)
 				{
-					ReturnBadRequestError(context, "");
+					using(StreamReader reader = new StreamReader(@"Resources\NoContentError.json"))
+					{
+						ReturnBadRequestError(context, reader.ReadToEnd());
+					}
 					continue;
 				}
 
-				string requestString = "";
-				string responseString;
+				string requestString, responseString;
+				using (StreamReader reader = new StreamReader(context.Request.InputStream))
+				{
+					requestString = reader.ReadToEnd();
+				}
 
 				if (!JsonParser.TryParseRequest(requestString, out responseString))
 				{
