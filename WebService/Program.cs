@@ -6,7 +6,7 @@ namespace WebService
 	{
 		static void Main(string[] args)
 		{
-			HttpListenerService server = new HttpListenerService("http://localhost:8080/");
+			HttpListenerService server = new HttpListenerService("http://webservice-44.apphb.com/");
 			server.RunServer();
 			Console.WriteLine("Server running. Press 'Q' to quit.");
 			while (true)
